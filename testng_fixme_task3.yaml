@@ -1,0 +1,28 @@
+---
+version: 0.1
+runson: win
+
+autosplit: true
+concurrency: 1 #spelling mistake in concurrency: 1 earlier spelt as conCurrency: 1
+
+runtime:
+  language: java
+  version: 11
+
+env: 
+  TOKEN: anvdegtod-asdaasda0asda-asda   #new-line for Token: anvdegtod-asdaasda0asda-asda
+
+pre:
+  - mvn -Dmaven.repo.local=./.m2 dependency:resolve
+
+testDiscovery:
+  type: raw
+  mode: dynamic
+  command: grep 'test name' xml/testng_win.xml | awk '{print$2}' | sed 's/name=//g' | sed 's/\x3e//g'
+
+testRunnerCommand: mvn test `-Dplatname=win `-Dmaven.repo.local=./.m2 dependency:resolve `-DselectedTests=$test  #Unnecessary apostrophes in the maven command.
+
+retryOnFailure: true  #spacing issue before retryOnFailure: true
+maxRetries: 3
+
+jobLabel: [selenium-testng, win, v1, autosplit]
